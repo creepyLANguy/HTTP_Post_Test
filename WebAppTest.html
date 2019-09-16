@@ -10,28 +10,28 @@
 <H1>Web Application Tester</H1>
 
 <div id="User Input Table">
-	<table>
-	
-	  <tr>
-		<th>
-			URL 
-		</th>
-		<th>
-			<input type="text" id="URL" size="80" value="https://httpbin.org/post"/>
-		</th>
-	  </tr>	  
-	  <tr>
-		<th>
-			POST 
-		</th>
-		<th>
-			<input type="text" id="POST" size="80" autocomplete="off" 
-			onchange="postUpdate_classic()"  onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" 
-			value="?sampleName=John Doe&age=18&gender=m&luckyNumber=7"
-			/>
-		</th>
-	  </tr>	  
-	</table>
+  <table>
+  
+    <tr>
+    <th>
+      URL 
+    </th>
+    <th>
+      <input type="text" id="URL" size="80" value="https://httpbin.org/post"/>
+    </th>
+    </tr>    
+    <tr>
+    <th>
+      POST 
+    </th>
+    <th>
+      <input type="text" id="POST" size="80" autocomplete="off" 
+      onchange="postUpdate_classic()"  onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" 
+      value="?sampleName=John Doe&age=18&gender=m&luckyNumber=7"
+      />
+    </th>
+    </tr>    
+  </table>
 </div>
 
 <br/>
@@ -56,115 +56,115 @@ rows="10" cols="40">
 
 <div id="Scripts">
 
-	<script type = "text/javascript"  src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type = "text/javascript"  src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<script>	
-	
-	function performTest()
-	{		
-		document.getElementById('errorMessage').innerHTML = "";
-		
-		var url = document.getElementById('URL').value;
-		
-		if (url.indexOf("http")==-1)
-		{
-			//alert("Your URL must begin with http:// or https://")
-			document.getElementById('errorMessage').innerHTML = "Your URL must begin with http:// or https://";
-			return;
-		}
-	
-		//Insert an invisible form into this page that gets posted to the url specified in the URL input field. 
-		var form = $('<form action="' + url + '" method="post"/>'); 
-		
-		//Append a field in the form for each key/value pair in the POST input field. 
-		appendPostFormElements(form);	
-		
-		//Append the form to this page and submit it to the url.  
-		$('body').append(form);
-		form.submit();  
-	}
-
-
-	//Get an array of POST key/value pairs and appends a form element for each.
-	function appendPostFormElements(form)
-	{
-		var propertiesArray = getPropertiesArray();
-	
-		//For each key/value pair we have, split into a further array by '='
-		// index[0] contains the  key, index[1] contains the value.
-		//Append these as a form element that will be posted. 
-		for (var i in propertiesArray)
-		{
-			var currentPair = propertiesArray[i].split('=');
-			form.append('<input type="hidden" name="' +currentPair[0]+ '" value="' +currentPair[1]+ '">');
-		}
-	}
-
-
-	//Converts each key/value pair in the GET style string from the POST input field to a "k=v" element in an array.
-	function getPropertiesArray()
-	{
-		var post = document.getElementById('POST').value;
-		
-		//post string likely begins with a '?', so we remove it. 
-		if (post.includes('?')==true)
-		{
-			post = post.replace('?','');
-		}
-		
-		//Generate an array where each element is a '=' conjoined key/value pair.
-		var propertiesArray = post.split('&');	
-		
-		return propertiesArray;
-	}
-
-
-	//Update the POST Items Summary box when the POST input box changes.
-	function postUpdate_classic()
-	{
-		document.getElementById('summaryBox').value = "";
-		
-		var propertiesArray = getPropertiesArray();
-		
-		for (var i in propertiesArray)
-		{
-			document.getElementById('summaryBox').value = document.getElementById('summaryBox').value + propertiesArray[i] + '\n';
-		}
-	}
-
-
-	//Update the POST input box box when the POST Items summary style input box changes.
-	function postUpdate_summary()
-	{
-		var box = document.getElementById('POST');
-		
-		var text = document.getElementById('summaryBox').value.replace(/\n/g,"&");
-		
-		box.value = "?" + text;
-	}
-
-
-	//Listens on the whole page for the enter key and performs the test. 
-	document.onkeypress = keyPress;
-	function keyPress(e)
-	{
-		//Allow for newline input into the summary box
-		if (document.getElementById('summaryBox') == document.activeElement)
-		{
-			return;
-		}
-		
-		var x = e || window.event;
-		var key = (x.keyCode || x.which);
-		
-		if(key == 13 || key == 3)
-		{
-			performTest();
-		}
+  <script>  
+  
+  function performTest()
+  {    
+    document.getElementById('errorMessage').innerHTML = "";
+    
+    var url = document.getElementById('URL').value;
+    
+    if (url.indexOf("http")==-1)
+    {
+      //alert("Your URL must begin with http:// or https://")
+      document.getElementById('errorMessage').innerHTML = "Your URL must begin with http:// or https://";
+      return;
     }
-	
-	</script>
-	
+  
+    //Insert an invisible form into this page that gets posted to the url specified in the URL input field. 
+    var form = $('<form action="' + url + '" method="post"/>'); 
+    
+    //Append a field in the form for each key/value pair in the POST input field. 
+    appendPostFormElements(form);  
+    
+    //Append the form to this page and submit it to the url.  
+    $('body').append(form);
+    form.submit();  
+  }
+
+
+  //Get an array of POST key/value pairs and appends a form element for each.
+  function appendPostFormElements(form)
+  {
+    var propertiesArray = getPropertiesArray();
+  
+    //For each key/value pair we have, split into a further array by '='
+    // index[0] contains the  key, index[1] contains the value.
+    //Append these as a form element that will be posted. 
+    for (var i in propertiesArray)
+    {
+      var currentPair = propertiesArray[i].split('=');
+      form.append('<input type="hidden" name="' +currentPair[0]+ '" value="' +currentPair[1]+ '">');
+    }
+  }
+
+
+  //Converts each key/value pair in the GET style string from the POST input field to a "k=v" element in an array.
+  function getPropertiesArray()
+  {
+    var post = document.getElementById('POST').value;
+    
+    //post string likely begins with a '?', so we remove it. 
+    if (post.includes('?')==true)
+    {
+      post = post.replace('?','');
+    }
+    
+    //Generate an array where each element is a '=' conjoined key/value pair.
+    var propertiesArray = post.split('&');  
+    
+    return propertiesArray;
+  }
+
+
+  //Update the POST Items Summary box when the POST input box changes.
+  function postUpdate_classic()
+  {
+    document.getElementById('summaryBox').value = "";
+    
+    var propertiesArray = getPropertiesArray();
+    
+    for (var i in propertiesArray)
+    {
+      document.getElementById('summaryBox').value = document.getElementById('summaryBox').value + propertiesArray[i] + '\n';
+    }
+  }
+
+
+  //Update the POST input box box when the POST Items summary style input box changes.
+  function postUpdate_summary()
+  {
+    var box = document.getElementById('POST');
+    
+    var text = document.getElementById('summaryBox').value.replace(/\n/g,"&");
+    
+    box.value = "?" + text;
+  }
+
+
+  //Listens on the whole page for the enter key and performs the test. 
+  document.onkeypress = keyPress;
+  function keyPress(e)
+  {
+    //Allow for newline input into the summary box
+    if (document.getElementById('summaryBox') == document.activeElement)
+    {
+      return;
+    }
+    
+    var x = e || window.event;
+    var key = (x.keyCode || x.which);
+    
+    if(key == 13 || key == 3)
+    {
+      performTest();
+    }
+    }
+  
+  </script>
+  
 </div>
 
 </html>
